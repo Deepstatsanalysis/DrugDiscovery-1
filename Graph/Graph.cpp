@@ -26,6 +26,10 @@ Graph::Graph(string file_name)
     int u, v;
 
     for(int i = 0; i < E; i++)
+        for(int j = 0; j < E; j++)
+            adj_matrix[i][j] = false;
+
+    for(int i = 0; i < E; i++)
     {
         infile >> u >> v;
         add_edge(u, v);
@@ -37,6 +41,8 @@ Graph::Graph(string file_name)
 void Graph::add_edge(int u, int v)
 {
     adj_list.push_back(make_pair(u, v));
+    adj_matrix[u][v] = true;
+    adj_matrix[v][u] = true;
 }
 
 int Graph::get_sat_term_name(char type, int i, int j, int k)
@@ -54,7 +60,7 @@ void Graph::generate_cnf_clause()
     vector< string > cnf_formula;
     string clause;
 
-    // every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
+    // 1 - every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
     for(int i = 0; i < E; i++)
     {
         clause = "";
@@ -64,7 +70,20 @@ void Graph::generate_cnf_clause()
         cnf_formula.push_back(clause);
     }
 
-    // every
+    // 2 - 
+
+    // no agency is subsidary of any other agency
+    for(int k1 = 0; k1 < K; k1++)
+    {
+        for(k2 = k1 + 1; k2 < k; k2++)
+        {
+            clause = "";
+            for(int i = 0; i < V; i++)
+            {
+
+            }
+        }
+    }
 
 }
 

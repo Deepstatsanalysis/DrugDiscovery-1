@@ -6,7 +6,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -21,6 +21,8 @@ class Graph
 
     // adjacency list of the graph
     vector< pair< int, int > > adj_list;
+    // adjacency matrix of the graph
+    bool adj_matrix[E][E];
     // list of constraint clauses of the graph
     vector< string > cnf_formulae;
 
