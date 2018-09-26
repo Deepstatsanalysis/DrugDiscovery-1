@@ -67,12 +67,54 @@ void Graph::generate_cnf_clause()
         for(int j = 0; j < K; j++)
             clause += to_string(get_sat_term_name('c', adj_list[i].first, adj_list[i].second, j)) + " ";
         clause += "0";
-        cnf_formula.push_back(clause);
+        cnf_formulae.push_back(clause);
     }
 
     // If i and j are connected only then they can be in the same agency, if there edge (i, j) are in the grah then i and j are in the graph, if they i and j are not
     // connected then they can't be in the same agency
-    for(int i = 0; i < )
+    for(int i = 0; i < V; i++)
+    {
+        for(int j = 0; j < V; j++)
+        {
+            for(int k = 0; k < K; k++)
+            {
+                string term_gik = to_string(get_sat_term_name('g', i, 0, k));
+                string term_gjk = to_string(get_sat_term_name('g', j, 0, k));
+
+                if(adj_matrix[i][j])
+                {
+                    string term_cijk = to_string(get_sat_term_name('c', i, j, k));
+
+                    clause = "";
+                    clause += "-" + term_gik + " ";
+                    clause += "-" + term_gjk + " ";
+                    clause += term_cijk + " ";
+                    clause += "0";
+                    cnf_formulae.push_back(clause);
+
+                    clause = "";
+                    clause += "-" + term_cijk + " ";
+                    clause += term_gik + " ";
+                    clause += "0";
+                    cnf_formulae.push_back(clause);
+
+                    clause = "";
+                    clause += "-" + term_cijk + " ";
+                    clause += term_gjk + " ";
+                    clause += "0";
+                    cnf_formulae.push_back(clause);
+                }
+                else
+                {
+                    clause = "";
+                    clause += "-" + term_gik + " ";
+                    clause += "-" + term_gjk + " ";
+                    clause += "0";
+                    cnf_formulae.push_back(clause);
+                }
+            }
+        }
+    }
 
     // no agency is subsidary of any other agency
     for(int k1 = 0; k1 < K; k1++)
