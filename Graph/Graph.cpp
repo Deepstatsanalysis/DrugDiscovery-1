@@ -39,7 +39,11 @@ void Graph::add_edge(int u, int v)
     adj_list.push_back(make_pair(u, v));
 }
 
-string
+string Graph::assign_clause_name(char type, int i, int j, int k)
+{
+
+}
+
 void Graph::generate_cnf_clause()
 {
     vector< string > cnf_formula;
@@ -65,6 +69,7 @@ void Graph::read_sat_output(string path)
 
 void Graph::generate_sub_graphs()
 {
+    
 }
 
 void Graph::write_sub_graphs(string path)
