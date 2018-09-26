@@ -25,8 +25,8 @@ Graph::Graph(string file_name)
 
     int u, v;
 
-    for(int i = 0; i < E; i++)
-        for(int j = 0; j < E; j++)
+    for(int i = 0; i < V; i++)
+        for(int j = 0; j < V; j++)
             adj_matrix[i][j] = false;
 
     for(int i = 0; i < E; i++)
@@ -60,7 +60,7 @@ void Graph::generate_cnf_clause()
     vector< string > cnf_formula;
     string clause;
 
-    // 1 - every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
+    // Every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
     for(int i = 0; i < E; i++)
     {
         clause = "";
@@ -70,7 +70,9 @@ void Graph::generate_cnf_clause()
         cnf_formula.push_back(clause);
     }
 
-    // 2 - 
+    // If i and j are connected only then they can be in the same agency, if there edge (i, j) are in the grah then i and j are in the graph, if they i and j are not
+    // connected then they can't be in the same agency
+    for(int i = 0; i < )
 
     // no agency is subsidary of any other agency
     for(int k1 = 0; k1 < K; k1++)

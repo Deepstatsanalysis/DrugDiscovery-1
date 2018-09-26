@@ -22,7 +22,7 @@ class Graph
     // adjacency list of the graph
     vector< pair< int, int > > adj_list;
     // adjacency matrix of the graph
-    bool adj_matrix[E][E];
+    bool adj_matrix[V][V];
     // list of constraint clauses of the graph
     vector< string > cnf_formulae;
 
