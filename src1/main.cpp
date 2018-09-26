@@ -6,12 +6,12 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-    string file_name = argv[1];
+    string filename = argv[1];
 
-    Graph *graph = new Graph(file_name);
+    Graph *graph = new Graph(filename);
 
     graph -> generate_cnf_clause();
-    graph -> write_clause(file_name);
+    graph -> write_clause(filename);
 
     return 0;
 }

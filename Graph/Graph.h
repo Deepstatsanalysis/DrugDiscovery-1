@@ -28,7 +28,7 @@ class Graph
 
 public:
     /* Takes the file name & construct the graph out of it */
-    Graph(string path);
+    Graph(string filename);
 
     /* Add an edge between u and v in the graph */
     void add_edge(int u, int v);
@@ -43,16 +43,16 @@ public:
     void generate_cnf_clause();
 
     /* write the clauses in a file for input by the miniSAT */
-    void write_clause(string path);
+    void write_clause(string filename);
 
     /* read the output of the miniSAT solver */
-    void read_sat_output(string path);
+    void read_sat_output(string filename);
 
     /* generate the sub_graphs from the output of the miniSAT solver */
     void generate_sub_graphs();
 
     /* write the sub_graphs to a file */
-    void write_sub_graphs(string path);
+    void write_sub_graphs(string filename);
 };
 
 #endif /* GRAPH_H */
