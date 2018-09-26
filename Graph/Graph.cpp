@@ -189,7 +189,7 @@ void Graph::generate_cnf_clause()
     variables = help_variable_count - 1;
 }
 
-void Graph::write_clause(string path)
+void Graph::write_clause(string filename)
 {
     ofstream myfile;
     myfile.open(path + ".satinput");
@@ -201,7 +201,7 @@ void Graph::write_clause(string path)
     myfile.close();
 }
 
-void Graph::read_sat_output(string path)
+void Graph::read_sat_output(string filename)
 {
     ifstream infile;
     infile.open(path + ".satoutput");
@@ -212,7 +212,7 @@ void Graph::generate_sub_graphs()
 {
 }
 
-void Graph::write_sub_graphs(string path)
+void Graph::write_sub_graphs(string filename)
 {
     ofstream myfile;
     myfile.open(path + ".subgraphs");
