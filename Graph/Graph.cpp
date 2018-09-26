@@ -39,12 +39,14 @@ void Graph::add_edge(int u, int v)
     adj_list.push_back(make_pair(u, v));
 }
 
+string
 void Graph::generate_cnf_clause()
 {
     vector< string > cnf_formula;
 
     // every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
-    
+
+
 }
 
 void Graph::write_clause(string path)
