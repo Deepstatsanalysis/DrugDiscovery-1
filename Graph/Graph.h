@@ -6,7 +6,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -19,19 +20,20 @@ class Graph
     // number of agencies
     int K;
 
+    int variables;
     // adjacency list of the graph
-    vector< pair< int, int > > adj_list;
+    vector<pair<int, int>> adj_list;
     // adjacency matrix of the graph
-    bool adj_matrix[V][V];
+    int **adj_matrix;
     // list of constraint clauses of the graph
-    vector< string > cnf_formulae;
+    vector<string> cnf_formulae;
 
-public:
-    /* Takes the file name & construct the graph out of it */
-    Graph(string path);
+  public:
+    /* Takes the file name & construct the graph out of it. In outputMode only read V,E,K */
+    Graph(string path, bool outputMode);
 
     /* Add an edge between u and v in the graph */
-    void add_edge(int u, int v);
+    void add_edge(int u, int v, int edgeNum);
 
     /* assign a term name accoring to miniSAT conventions, type = 'g' or 'c' && i,j,k = appropriate labels */
     int get_sat_term_name(char type, int i, int j, int k);
