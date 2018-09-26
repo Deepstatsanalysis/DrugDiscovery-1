@@ -142,7 +142,7 @@ void Graph::generate_cnf_clause()
                     clause += "0";
                     cnf_formulae.push_back(clause);
                 }
-                else
+                else if (i != j)
                 {
                     clause = "";
                     clause += "-" + term_gik + " ";
