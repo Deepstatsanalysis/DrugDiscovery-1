@@ -192,7 +192,7 @@ void Graph::generate_cnf_clause()
 void Graph::write_clause(string filename)
 {
     ofstream myfile;
-    myfile.open(path + ".satinput");
+    myfile.open(filename + ".satinput");
     myfile << "p cnf " << variables << ' ' << cnf_formulae.size() << endl;
     for (int i = 0; i < cnf_formulae.size(); i++)
     {
@@ -204,7 +204,7 @@ void Graph::write_clause(string filename)
 void Graph::read_sat_output(string filename)
 {
     ifstream infile;
-    infile.open(path + ".satoutput");
+    infile.open(filename + ".satoutput");
     infile.close();
 }
 
@@ -215,6 +215,6 @@ void Graph::generate_sub_graphs()
 void Graph::write_sub_graphs(string filename)
 {
     ofstream myfile;
-    myfile.open(path + ".subgraphs");
+    myfile.open(filename + ".subgraphs");
     myfile.close();
 }

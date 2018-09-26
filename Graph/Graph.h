@@ -28,15 +28,9 @@ class Graph
     // list of constraint clauses of the graph
     vector<string> cnf_formulae;
 
-<<<<<<< HEAD
-public:
-    /* Takes the file name & construct the graph out of it */
-    Graph(string filename);
-=======
   public:
     /* Takes the file name & construct the graph out of it. In outputMode only read V,E,K */
     Graph(string path, bool outputMode);
->>>>>>> 961ff2e136e38a7dbc455e9b512bd1c6fba51224
 
     /* Add an edge between u and v in the graph */
     void add_edge(int u, int v, int edgeNum);
