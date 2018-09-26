@@ -31,8 +31,11 @@ public:
     /* Add an edge between u and v in the graph */
     void add_edge(int u, int v);
 
-    /* assign a clause name accoring to miniSAT conventions, type = 'g' or 'c' && i,j,k = appropriate labels */
-    string assign_clause_name(char type, int i, int j, int k);
+    /* assign a term name accoring to miniSAT conventions, type = 'g' or 'c' && i,j,k = appropriate labels */
+    int get_sat_term_name(char type, int i, int j, int k);
+
+    /* assign a term name accoring to simple, understandable conventions, sat_term = 5, -4 ( x5, -x4) */
+    string get_graph_term_name(int sat_term);
 
     /* generate the contraint clauses for the graph */
     void generate_cnf_clause();

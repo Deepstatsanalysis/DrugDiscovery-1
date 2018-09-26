@@ -39,7 +39,12 @@ void Graph::add_edge(int u, int v)
     adj_list.push_back(make_pair(u, v));
 }
 
-string Graph::assign_clause_name(char type, int i, int j, int k)
+int Graph::get_sat_term_name(char type, int i, int j, int k)
+{
+
+}
+
+string Graph::get_graph_term_name(int sat_term)
 {
 
 }
@@ -47,9 +52,19 @@ string Graph::assign_clause_name(char type, int i, int j, int k)
 void Graph::generate_cnf_clause()
 {
     vector< string > cnf_formula;
+    string clause;
 
     // every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
+    for(int i = 0; i < E; i++)
+    {
+        clause = "";
+        for(int j = 0; j < K; j++)
+            clause += to_string(get_sat_term_name('c', adj_list[i].first, adj_list[i].second, j)) + " ";
+        clause += "0";
+        cnf_formula.push_back(clause);
+    }
 
+    // every
 
 }
 
@@ -69,7 +84,7 @@ void Graph::read_sat_output(string path)
 
 void Graph::generate_sub_graphs()
 {
-    
+
 }
 
 void Graph::write_sub_graphs(string path)
