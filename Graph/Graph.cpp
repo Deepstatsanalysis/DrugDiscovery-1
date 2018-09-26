@@ -116,15 +116,35 @@ void Graph::generate_cnf_clause()
         }
     }
 
-    // no agency is subsidary of any other agency
+    // no agency is subsidary of any other agency, ~(gi1k1 -> gi1k2 && gi2k1 -> gi2k2 && ........ gink1 -> gink2)
+    int help_variable_count = V * K + E * K + 1;
     for(int k1 = 0; k1 < K; k1++)
     {
-        for(k2 = k1 + 1; k2 < k; k2++)
+        for(k2 = k1 + 1; k2 < K; k2++)
         {
             clause = "";
+            int help_variables_k1_k2[V];
             for(int i = 0; i < V; i++)
             {
+                clause += to_string(help_variable_count) + " ";
+                help_variables_k1_k2[i] = help_variable_count++;
+            }
+            clause += "0";
+            cnf_formulae.push_back(clause);
 
+            for(int i = 0; i < V; i++)
+            {
+                clause = "";
+                clause += "-" + to_string(help_variables_k1_k2[i]) + " ";
+                clause += to_string(get_sat_term_name('g', i, 0, k1)) + " ";
+                clause += "0";
+                cnf_formulae.push_back(clause);
+
+                clause = "";
+                clause += "-" + to_string(help_variables_k1_k2[i]) + " ";
+                clause += to_string(get_sat_term_name('g', i, 0, k2)) + " ";
+                clause += "0";
+                cnf_formulae.push_back(clause);
             }
         }
     }
