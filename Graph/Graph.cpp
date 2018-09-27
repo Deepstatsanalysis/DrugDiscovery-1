@@ -85,21 +85,11 @@ void Graph::generate_cnf_clause()
     vector<string> cnf_formula;
     string clause;
 
-    // Every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
-    for (int i = 0; i < E; i++)
-    {
-        clause = "";
-        for (int j = 0; j < K; j++)
-            clause += to_string(get_sat_term_name('c', adj_list[i].first, adj_list[i].second, j)) + " ";
-        clause += "0";
-        cnf_formulae.push_back(clause);
-    }
-
     // If i and j are connected only then they can be in the same agency, if there edge (i, j) are in the grah then i and j are in the graph, if they i and j are not
     // connected then they can't be in the same agency
     for (int i = 0; i < V; i++)
     {
-        for (int j = 0; j < V; j++)
+        for (int j = i + 1; j < V; j++)
         {
             for (int k = 0; k < K; k++)
             {
@@ -129,7 +119,7 @@ void Graph::generate_cnf_clause()
                     clause += "0";
                     cnf_formulae.push_back(clause);
                 }
-                else if (i != j)
+                else
                 {
                     clause = "";
                     clause += "-" + term_gik + " ";
@@ -139,6 +129,16 @@ void Graph::generate_cnf_clause()
                 }
             }
         }
+    }
+
+    // Every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
+    for (int i = 0; i < E; i++)
+    {
+        clause = "";
+        for (int j = 0; j < K; j++)
+            clause += to_string(get_sat_term_name('c', adj_list[i].first, adj_list[i].second, j)) + " ";
+        clause += "0";
+        cnf_formulae.push_back(clause);
     }
 
     // no agency is subsidary of any other agency, ~(gi1k1 -> gi1k2 && gi2k1 -> gi2k2 && ........ gink1 -> gink2)
@@ -165,13 +165,13 @@ void Graph::generate_cnf_clause()
             {
                 clause = "";
                 clause += "-" + to_string(help_variables_k1_k2[i]) + " ";
-                clause += "-" + to_string(get_sat_term_name('g', i, 0, k1)) + " ";
+                clause += to_string(get_sat_term_name('g', i, 0, k1)) + " ";
                 clause += "0";
                 cnf_formulae.push_back(clause);
 
                 clause = "";
                 clause += "-" + to_string(help_variables_k1_k2[i]) + " ";
-                clause += to_string(get_sat_term_name('g', i, 0, k2)) + " ";
+                clause += "-" + to_string(get_sat_term_name('g', i, 0, k2)) + " ";
                 clause += "0";
                 cnf_formulae.push_back(clause);
             }
