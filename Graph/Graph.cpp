@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Graph::Graph(string file_name, bool outputMode)
+Graph::Graph(string file_name, bool output_mode)
 {
     int num_vertices;
     int num_edges;
@@ -24,17 +24,15 @@ Graph::Graph(string file_name, bool outputMode)
     E = num_edges;
     K = num_agencies;
 
-    if (!outputMode)
+    if (!output_mode)
     {
         int u, v;
 
-        int **tempDistanceMatrix = new int *[V];
-        for (int i = 0; i < V; ++i)
-        {
-            tempDistanceMatrix[i] = new int[V];
-        }
+        int **temp_distance_matrix = new int *[V];
+        for (int i = 0; i < V; i++)
+            temp_distance_matrix[i] = new int[V];
 
-        adj_matrix = tempDistanceMatrix;
+        adj_matrix = temp_distance_matrix;
 
         for (int i = 0; i < V; i++)
             for (int j = 0; j < V; j++)
@@ -43,18 +41,18 @@ Graph::Graph(string file_name, bool outputMode)
         for (int i = 0; i < E; i++)
         {
             infile >> u >> v;
-            add_edge(u - 1, v - 1, i);
+            add_edge((u - 1), (v - 1), i);
         }
     }
 
     infile.close();
 }
 
-void Graph::add_edge(int u, int v, int edgeNum)
+void Graph::add_edge(int u, int v, int edge_num)
 {
     adj_list.push_back(make_pair(u, v));
-    adj_matrix[u][v] = edgeNum;
-    adj_matrix[v][u] = edgeNum;
+    adj_matrix[u][v] = edge_num;
+    adj_matrix[v][u] = edge_num;
 }
 
 int Graph::get_sat_term_name(char type, int i, int j, int k)
@@ -69,28 +67,17 @@ int Graph::get_sat_term_name(char type, int i, int j, int k)
     case 'c':
     {
 
-        int edgeNum = adj_matrix[i][j];
-
-        if (edgeNum == -1)
-        {
-            cout << "Sat Term C not defined for dis connected vertices";
-            return 0;
-        }
+        int edge_num = adj_matrix[i][j];
         int offset = V * K;
-        return edgeNum * K + k + offset + 1;
+        return edge_num * K + k + offset + 1;
         break;
     }
     default:
     {
-        cout << "Incorrect Type Parameter";
         return 0;
         break;
     }
     }
-}
-
-string Graph::get_graph_term_name(int sat_term)
-{
 }
 
 void Graph::generate_cnf_clause()
@@ -193,11 +180,11 @@ void Graph::write_clause(string filename)
 {
     ofstream myfile;
     myfile.open(filename + ".satinput");
-    myfile << "p cnf " << variables << ' ' << cnf_formulae.size() << endl;
+
+    myfile << "p cnf " << variables << ' ' << cnf_formulae.size() << "\n";
     for (int i = 0; i < cnf_formulae.size(); i++)
-    {
-        myfile << cnf_formulae[i] << endl;
-    }
+        myfile << cnf_formulae[i] << "\n";
+
     myfile.close();
 }
 
@@ -205,16 +192,53 @@ void Graph::read_sat_output(string filename)
 {
     ifstream infile;
     infile.open(filename + ".satoutput");
-    infile.close();
-}
 
-void Graph::generate_sub_graphs()
-{
+    string result;
+    int temp_result;
+
+    infile >> result;
+    if (result == "SAT")
+    {
+        for (int i = 0; i < K; i++)
+        {
+            vector<int> temp;
+            result_sub_graphs.push_back(temp);
+        }
+
+        for (int i = 0; i < V; i++)
+        {
+            for (int j = 0; j < K; j++)
+            {
+                infile >> temp_result;
+                if (temp_result > 0)
+                    result_sub_graphs[j].push_back(i + 1);
+            }
+        }
+    }
+
+    infile.close();
 }
 
 void Graph::write_sub_graphs(string filename)
 {
     ofstream myfile;
     myfile.open(filename + ".subgraphs");
+
+    if (result_sub_graphs.size() == 0)
+    {
+        myfile << 0;
+    }
+    else
+    {
+
+        for (int i = 0; i < result_sub_graphs.size(); i++)
+        {
+            myfile << '#' << i + 1 << ' ' << result_sub_graphs[i].size() << "\n";
+            for (int j = 0; j < result_sub_graphs[i].size(); j++)
+                myfile << result_sub_graphs[i][j] << ' ';
+            myfile << "\n";
+            myfile << "\n";
+        }
+    }
     myfile.close();
 }

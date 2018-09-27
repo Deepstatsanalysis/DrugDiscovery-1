@@ -5,13 +5,12 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-    string filename = argv[1];
+    string file_name = argv[1];
 
-    Graph *graph = new Graph(filename, true);
+    Graph *graph = new Graph(file_name, true);
 
-    graph->read_sat_output(filename);
-    graph->generate_sub_graphs();
-    graph->write_sub_graphs(filename);
+    graph -> read_sat_output(file_name);
+    graph -> write_sub_graphs(file_name);
 
     return 0;
 }
