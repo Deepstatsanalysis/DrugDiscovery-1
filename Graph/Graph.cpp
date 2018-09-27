@@ -145,8 +145,12 @@ void Graph::generate_cnf_clause()
     int help_variable_count = V * K + E * K + 1;
     for (int k1 = 0; k1 < K; k1++)
     {
-        for (int k2 = k1 + 1; k2 < K; k2++)
+        for (int k2 = 0; k2 < K; k2++)
         {
+            if (k1 == k2)
+            {
+                continue;
+            }
             clause = "";
             int help_variables_k1_k2[V];
             for (int i = 0; i < V; i++)
