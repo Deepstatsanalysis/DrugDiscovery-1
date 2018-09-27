@@ -15,4 +15,4 @@ warnings: $(GRAPH) $(SRC1) $(SRC2)
 	  g++ -g --std=c++11 -Wall -Wextra -o program2.out $(GRAPH) $(SRC2)
 
 clean:
-	rm -rf *.out *.satinput
+	rm -rf *.out *.satinput *.satoutput *.subgraphs

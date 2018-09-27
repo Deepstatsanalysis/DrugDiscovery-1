@@ -161,7 +161,7 @@ void Graph::generate_cnf_clause()
             {
                 clause = "";
                 clause += "-" + to_string(help_variables_k1_k2[i]) + " ";
-                clause += to_string(get_sat_term_name('g', i, 0, k1)) + " ";
+                clause += "-" + to_string(get_sat_term_name('g', i, 0, k1)) + " ";
                 clause += "0";
                 cnf_formulae.push_back(clause);
 
@@ -235,8 +235,16 @@ void Graph::write_sub_graphs(string filename)
         {
             myfile << '#' << i + 1 << ' ' << result_sub_graphs[i].size() << "\n";
             for (int j = 0; j < result_sub_graphs[i].size(); j++)
-                myfile << result_sub_graphs[i][j] << ' ';
-            myfile << "\n";
+            {
+                if (j != result_sub_graphs[i].size() - 1)
+                {
+                    myfile << result_sub_graphs[i][j] << ' ';
+                }
+                else
+                {
+                    myfile << result_sub_graphs[i][j];
+                }
+            }
             myfile << "\n";
         }
     }
