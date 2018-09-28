@@ -24,6 +24,8 @@ Graph::Graph(string file_name, bool output_mode)
     E = num_edges;
     K = num_agencies;
 
+    cout << V << " " << E << " " << K << "\n";
+
     if (!output_mode)
     {
         int u, v;
@@ -85,7 +87,27 @@ void Graph::generate_cnf_clause()
     vector<string> cnf_formula;
     string clause;
 
-    // If i and j are connected only then they can be in the same agency, if there edge (i, j) are in the grah then i and j are in the graph, if they i and j are not
+    // Every vertex belongs to atleast one agency, for (i) in range(V), G(i, 1) || G(i, 2) ...... || G(i, k)
+    for (int i = 0; i < V; i++)
+    {
+        clause = "";
+        for (int j = 0; j < K; j++)
+            clause += to_string(get_sat_term_name('g', i, 0, j)) + " ";
+        clause += "0";
+        cnf_formulae.push_back(clause);
+    }
+
+    // Every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
+    for (int i = 0; i < E; i++)
+    {
+        clause = "";
+        for (int j = 0; j < K; j++)
+            clause += to_string(get_sat_term_name('c', adj_list[i].first, adj_list[i].second, j)) + " ";
+        clause += "0";
+        cnf_formulae.push_back(clause);
+    }
+
+    // If i and j are connected only then they can be in the same agency, if there edge (i, j) are in the graph then i and j are in the graph, if they i and j are not
     // connected then they can't be in the same agency
     for (int i = 0; i < V; i++)
     {
@@ -129,16 +151,6 @@ void Graph::generate_cnf_clause()
                 }
             }
         }
-    }
-
-    // Every edge belongs to atleast one agency, for (i, j) in adj_list, C(ij, 1) || C(ij, 2) ...... || C(ij, k)
-    for (int i = 0; i < E; i++)
-    {
-        clause = "";
-        for (int j = 0; j < K; j++)
-            clause += to_string(get_sat_term_name('c', adj_list[i].first, adj_list[i].second, j)) + " ";
-        clause += "0";
-        cnf_formulae.push_back(clause);
     }
 
     // no agency is subsidary of any other agency, ~(gi1k1 -> gi1k2 && gi2k1 -> gi2k2 && ........ gink1 -> gink2)
