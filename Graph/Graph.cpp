@@ -3,28 +3,15 @@
  * Author: Shashwat Shivam, Shashank Goel
  */
 
-#include <iostream>
 #include <fstream>
 #include "Graph.h"
 
-using namespace std;
-
 Graph::Graph(string file_name, bool output_mode)
 {
-    int num_vertices;
-    int num_edges;
-    int num_agencies;
-
     ifstream infile;
     infile.open(file_name + ".graph");
 
-    infile >> num_vertices >> num_edges >> num_agencies;
-
-    V = num_vertices;
-    E = num_edges;
-    K = num_agencies;
-
-    cout << V << " " << E << " " << K << "\n";
+    infile >> V >> E >> K;
 
     if (!output_mode)
     {
@@ -68,7 +55,6 @@ int Graph::get_sat_term_name(char type, int i, int j, int k)
     }
     case 'c':
     {
-
         int edge_num = adj_matrix[i][j];
         int offset = V * K;
         return edge_num * K + k + offset + 1;
@@ -110,9 +96,7 @@ void Graph::generate_cnf_clause()
     // If i and j are connected only then they can be in the same agency, if there edge (i, j) are in the graph then i and j are in the graph, if they i and j are not
     // connected then they can't be in the same agency
     for (int i = 0; i < V; i++)
-    {
         for (int j = i + 1; j < V; j++)
-        {
             for (int k = 0; k < K; k++)
             {
                 string term_gik = to_string(get_sat_term_name('g', i, 0, k));
@@ -150,19 +134,14 @@ void Graph::generate_cnf_clause()
                     cnf_formulae.push_back(clause);
                 }
             }
-        }
-    }
 
     // no agency is subsidary of any other agency, ~(gi1k1 -> gi1k2 && gi2k1 -> gi2k2 && ........ gink1 -> gink2)
     int help_variable_count = V * K + E * K + 1;
     for (int k1 = 0; k1 < K; k1++)
-    {
         for (int k2 = 0; k2 < K; k2++)
         {
             if (k1 == k2)
-            {
                 continue;
-            }
             clause = "";
             int help_variables_k1_k2[V];
             for (int i = 0; i < V; i++)
@@ -188,7 +167,6 @@ void Graph::generate_cnf_clause()
                 cnf_formulae.push_back(clause);
             }
         }
-    }
     variables = help_variable_count - 1;
 }
 
@@ -222,14 +200,12 @@ void Graph::read_sat_output(string filename)
         }
 
         for (int i = 0; i < V; i++)
-        {
             for (int j = 0; j < K; j++)
             {
                 infile >> temp_result;
                 if (temp_result > 0)
                     result_sub_graphs[j].push_back(i + 1);
             }
-        }
     }
 
     infile.close();
@@ -241,28 +217,17 @@ void Graph::write_sub_graphs(string filename)
     myfile.open(filename + ".subgraphs");
 
     if (result_sub_graphs.size() == 0)
-    {
         myfile << 0;
-    }
     else
-    {
-
         for (int i = 0; i < result_sub_graphs.size(); i++)
         {
             myfile << '#' << i + 1 << ' ' << result_sub_graphs[i].size() << "\n";
             for (int j = 0; j < result_sub_graphs[i].size(); j++)
-            {
                 if (j != result_sub_graphs[i].size() - 1)
-                {
                     myfile << result_sub_graphs[i][j] << ' ';
-                }
                 else
-                {
                     myfile << result_sub_graphs[i][j];
-                }
-            }
             myfile << "\n";
         }
-    }
     myfile.close();
 }
